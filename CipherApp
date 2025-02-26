@@ -1,0 +1,559 @@
+
+import java.util.Scanner;
+
+//class for making encryption by using Atbash method
+class AtbashEncryption {
+    private String msg;
+
+    //To store the encrypted msg
+    private String encryptedMsg = "";
+
+    // Constructor to initialize the message and encrypt it
+    public AtbashEncryption(String msg) {
+        this.msg = msg;
+        encryptMessage();
+    }
+
+    private void encryptMessage() {
+
+        // converting string to character by using toCharArray
+        for (char character : msg.toCharArray()) {
+
+            //check if character is letter or not
+            if (Character.isLetter(character)) {
+
+                // make sure all letter is capital
+                character = Character.toUpperCase(character);
+                int newCharacter = ('A' - character + 25);
+                character = (char) ('A' + newCharacter);
+
+                //Store the encrypted letters in empty string
+                encryptedMsg += character;
+
+                // check if there is space add it to encrypted msg
+            } else if (Character.isWhitespace(character)) {
+                encryptedMsg += character;
+            }
+        }
+    }
+
+    // Getter method to return the encrypted message
+    public String getEncryptedMsg() {
+        return encryptedMsg;
+    }
+}
+
+
+
+//class for making decryption by using Atbash method
+class DecryptionAtbash {
+
+    private String msg;
+
+    //To store the encrypted msg
+    private String decryptedMsg = "";
+
+    // Constructor to initialize the message and encrypt it
+    public DecryptionAtbash(String msg) {
+        this.msg = msg;
+        decryptmsg();
+    }
+
+    private void decryptmsg() {
+
+        // converting string to character by using toCharArray
+        for (char character : msg.toCharArray()) {
+
+            //check if character is letter or not
+            if (Character.isLetter(character)) {
+
+                // make sure all letter is capital
+                character = Character.toUpperCase(character);
+                int newCharacter = ('Z' - character - 25);
+                character = (char) ('Z' + newCharacter);
+
+                //Store the encrypted letters in empty string
+                decryptedMsg += character;
+
+                // check if there is space add it to decrypted msg
+            } else if (Character.isWhitespace(character)) {
+                decryptedMsg += character;
+            }
+        }
+    }
+
+    // Getter method to return the decrypted message
+    public String decryptedmsg() {
+        return decryptedMsg;
+    }
+
+}
+
+
+
+//class for making encryption by using Affine Cipher Method
+class AffineCipherEncryption {
+    private String msg;
+    private int key1 ;
+    private int key2;
+
+
+    //To store the encrypted msg
+    private String encryptedMsg = "";
+
+    // Constructor to initialize the message and encrypt it
+    public AffineCipherEncryption(String msg , int key1 , int key2) {
+        this.msg = msg;
+        this.key1 = key1;
+        this.key2 = key2;
+
+        encryptedMsg();
+    }
+
+    private void encryptedMsg() {
+
+        // converting string to character by using toCharArray
+        for (char character : msg.toCharArray()) {
+
+            //check if character is letter or not
+            if (Character.isLetter(character)) {
+
+                // make sure all letter is capital
+                character = Character.toUpperCase(character);
+                int newCharacter = ((key1 * (character - 'A') + key2) % 26);
+                character = (char) ('A' + newCharacter);
+
+                //Store the encrypted letters in empty string
+                encryptedMsg += character;
+
+                // check if there is space add it to encrypted msg
+            } else if (Character.isWhitespace(character)) {
+                encryptedMsg += character;
+            }
+        }
+    }
+
+    // Getter method to return the encrypted message
+    public String getEncryptedMsg() {
+        return encryptedMsg;
+    }
+}
+
+
+
+//class for making decryption by using Affine Cipher Method
+class AffineCipherDecryption {
+    private String msg;
+    private int key1 ;
+    private int key2;
+    private int ModInverseKey1;
+
+
+    //To store the decrypted msg
+    private String DecryptedMessage = "";
+
+    //To Find Multiplicative Inverse
+    public int modInverse(int a, int m) {
+        for (int i = 0; i < m; i++) {
+            if (((i * a) % m) == 1) {
+                return a;
+            }
+        }
+        return -1;    // No modular inverse found
+    }
+
+    // Constructor to initialize the message and decrypt it
+    public AffineCipherDecryption(String msg , int key1 , int key2) {
+        this.msg = msg;
+        this.key1 = key1;
+        this.key2 = key2;
+
+        DecryptedMessage();
+    }
+
+    private void DecryptedMessage() {
+
+        while(true){
+            ModInverseKey1 = modInverse(key1 , 26);
+            if (ModInverseKey1 == 0) {
+                System.out.println("Invalid keys. The modular multiplicative inverse of key1 does not exist");
+                continue;
+            }
+
+            else
+                break;
+        }
+
+        // converting string to character by using toCharArray
+        for (char character : msg.toCharArray()) {
+
+            //check if character is letter or not
+            if (Character.isLetter(character)) {
+
+                // make sure all letter is capital
+                character = Character.toUpperCase(character);
+                int newCharacter = ((ModInverseKey1 * ((character - 'A') - key2 + 26)) % 26);
+                character = (char) ('A' + newCharacter);
+
+                //Store the decrypted letters in empty string
+                DecryptedMessage += character;
+
+                // check if there is space add it to decrypted msg
+            } else if (Character.isWhitespace(character)) {
+                DecryptedMessage += character;
+            }
+        }
+    }
+
+    // Getter method to return the decrypted message
+    public String GetDecryptedMessage() {
+        return DecryptedMessage;
+    }
+}
+
+//class for making encryption by using Atbash method
+class MorseCodeEncryption {
+    private String msg;
+
+    //To store the encrypted msg
+    private String encryptedMsg = "";
+
+    // Constructor to initialize the message and encrypt it
+    public MorseCodeEncryption(String msg) {
+        this.msg = msg;
+        encryptMessage();
+    }
+
+    //Function to convert each letter to its sign in MorseCode
+    public String Alphabet (char character)
+    {
+        character = Character.toUpperCase(character);
+
+        switch (character) {
+            case 'A': return ".-";
+            case 'B': return "-...";
+            case 'C': return "-.-.";
+            case 'D': return "-..";
+            case 'E': return ".";
+            case 'F': return "..-.";
+            case 'G': return "--.";
+            case 'H': return "....";
+            case 'I': return "..";
+            case 'J': return ".---";
+            case 'K': return "-.-";
+            case 'L': return ".-..";
+            case 'M': return "--";
+            case 'N': return "-.";
+            case 'O': return "---";
+            case 'P': return ".--.";
+            case 'Q': return "--.-";
+            case 'R': return ".-.";
+            case 'S': return "...";
+            case 'T': return "-";
+            case 'U': return "..-";
+            case 'V': return "...-";
+            case 'W': return ".--";
+            case 'X': return "-..-";
+            case 'Y': return "-.--";
+            case 'Z': return "--..";
+            default: return ""; // Handle non-alphabet characters
+        }
+    }
+
+    private void encryptMessage() {
+
+        // converting string to character by using toCharArray
+        for (char character : msg.toCharArray()) {
+
+            //check if character is letter or not
+            if (Character.isLetter(character)) {
+
+                // make sure all letter is capital
+                character = Character.toUpperCase(character);
+
+                //Store the encrypted letters in empty string
+                encryptedMsg += Alphabet(character) + " ";
+
+                // check if there is space add it to encrypted msg
+            } else if (Character.isWhitespace(character)) {
+                encryptedMsg += Alphabet(character) + "  ";
+            }
+        }
+    }
+
+    // Getter method to return the encrypted message
+    public String getEncryptedMsg() {
+        return encryptedMsg;
+    }
+}
+
+
+
+public class Cipher {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        int Choice1 = 0 ;
+        int Choice2 = 0 ;
+
+        do{
+
+            //Display The Menu
+            System.out.println("Welcome To The Program !\n Please Choose One Option From The Following");
+            System.out.println("-------------------------------------------------------------------------");
+            System.out.println("MENU");
+            System.out.println("[1] Encryption");
+            System.out.println("[2] Decryption");
+            System.out.println("[3] Exit");
+
+            // check if the input is integer or not
+            if (input.hasNextInt())
+            {
+                Choice1 = input.nextInt();
+                //To clear the buffer
+                input.nextLine();
+
+            } else {
+                System.out.println("Invalid input....Please Enter A Valid Integer Input");
+                input.nextLine();
+                // Restart the loop
+                continue;
+            }
+
+            switch(Choice1){
+                case 1 :
+
+                    //Applying all options of encryption
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("Please Choose Which Type of Cipher you want for Encryption");
+                    System.out.println("[1] Atbash Cipher");
+                    System.out.println("[2] Affine Cipher");
+                    System.out.println("[3] MorseCode Cipher");
+                    //Validation For Input Of Menu
+                    while(true){
+                        //Check if the input is integer or not
+                        if (input.hasNextInt())
+                        {
+                            Choice2 = input.nextInt();
+                            //To clear the buffer
+                            input.nextLine();
+                            break;
+
+                        } else {
+                            System.out.println("Invalid input....Please Enter A Valid Integer Input");
+                            input.nextLine();
+                        }
+                    }
+                    System.out.println("--------------------------------------------------------------------------");
+
+                    switch (Choice2){
+                        case 1 :
+
+                            // Applying Atbash Cipher Encryption
+                            System.out.println("Please Enter your Message to encrypt it:");
+                            String message = input.nextLine();
+                            //Creat Object From AtbashEncryotion Class
+                            AtbashEncryption encryptedMessage = new AtbashEncryption(message);
+                            //use getter method to return the encrypted msg
+                            System.out.println("The Encrypted Message is: " + encryptedMessage.getEncryptedMsg());
+                            System.out.println("--------------------------------------------------------------------------");
+                            break;
+
+                        case 2 :
+
+                            // Applying Affine Cipher Encryption
+                            int key1;
+                            int key2;
+                            System.out.println("Please Enter your Message to encrypt it:");
+                            String message1 = input.nextLine();
+                            System.out.println("Important Note: The Equation of Encryption is [(key1 * x) + key2] % 26");
+
+                            // Ensure valid Key1 input
+                            while (true) {
+                                System.out.print("Please Enter Value Of Key1 (positive integer): ");
+
+                                //Check if input is integer not character
+                                if (input.hasNextInt()) {
+                                    key1 = input.nextInt();
+
+                                    // Check if key1 is positive
+                                    if (key1 > 0) {
+                                        // Clear the buffer
+                                        input.nextLine();
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid input... Please enter a POSITIVE integer.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid input... Please enter a VALID INTEGER.");
+                                    input.nextLine();
+                                }
+                            }
+
+                            // Ensure valid Key2 input
+                            while (true) {
+                                System.out.print("Please Enter Value Of Key2 (positive integer): ");
+
+                                //Check if input is integer not character
+                                if (input.hasNextInt()) {
+                                    key2 = input.nextInt();
+
+                                    // Check if key2 is positive
+                                    if (key2 > 0) {
+                                        // Clear the buffer
+                                        input.nextLine();
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid Input... Please Enter POSITIVE integer.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid Input... Please Enter VALID INTEGER.");
+                                    input.next();
+                                }
+                            }
+
+                            // Create Object from AffineCipherEncryption Class
+                            AffineCipherEncryption EncryptedMessage = new AffineCipherEncryption(message1, key1, key2);
+                            // Use getter method to return the encrypted message
+                            System.out.println("The Encrypted Message is: " + EncryptedMessage.getEncryptedMsg());
+                            System.out.println("--------------------------------------------------------------------------");
+                            break;
+
+                        case 3 :
+
+                            // Applying MorseCode Cipher Encryption
+                            System.out.println("Please Enter your Message to encrypt it:");
+                            String message3 = input.nextLine();
+                            //Creat Object From AtbashEncryotion Class
+                            MorseCodeEncryption EncryptedMessageS = new MorseCodeEncryption(message3);
+                            //use getter method to return the encrypted msg
+                            System.out.println("The Encrypted Message is: " + EncryptedMessageS.getEncryptedMsg());
+                            System.out.println("--------------------------------------------------------------------------");
+                            break;
+
+                        default :
+                            // For inputs which is not in choices
+                            System.out.println("Invalid Input...Please Try Again");
+                    }
+                    break;
+
+                case 2 :
+                    //Applying all options of decryption
+                    System.out.println("--------------------------------------------------------------------------");
+                    System.out.println("Please Choose Which Type of Cipher you want for Decryption");
+                    System.out.println("[1] Atbash Cipher");
+                    System.out.println("[2] Affine Cipher");
+
+                    //Validation For Input Of Menu
+                    while(true){
+                        //Check if input is integer not character
+                        if (input.hasNextInt())
+                        {
+                            Choice2 = input.nextInt();
+                            //To clear the buffer
+                            input.nextLine();
+                            break;
+
+                        } else {
+                            System.out.println("Invalid input....Please Enter A Valid Integer Input");
+                            input.nextLine();
+                        }
+                    }
+
+                    System.out.println("--------------------------------------------------------------------------");
+
+                    switch (Choice2){
+                        case 1 :
+
+                            //Applying Atbash Cipher decryption
+                            System.out.println("Please Enter your Message to decrypt it:");
+                            String message = input.nextLine();
+                            //Create Object From DecryptionAtbash Class
+                            DecryptionAtbash decryptedmsg = new DecryptionAtbash(message);
+                            //Use Getter Method to return the decrypted msg
+                            System.out.println("The decrypted message is: " + decryptedmsg.decryptedmsg());
+                            System.out.println("--------------------------------------------------------------------------");
+                            break;
+
+                        case 2 :
+                            //Applying Affine Cihpher decryption
+                            int key1 ;
+                            int key2 ;
+                            System.out.println("Please Enter your Message to decrypt it:");
+                            message = input.nextLine();
+                            System.out.println("Important Note : Equation Of Decryption is [key_a ( x - key_b ) % 26]");
+
+                            // Ensure valid Key1 input
+                            while (true) {
+                                System.out.print("Please Enter Value Of Key1 (positive integer): ");
+
+                                //Check if input is integer not character
+                                if (input.hasNextInt()) {
+                                    key1 = input.nextInt();
+
+                                    // Check if key1 is positive
+                                    if (key1 > 0) {
+                                        // Clear the buffer
+                                        input.nextLine();
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid input... Please enter a POSITIVE integer.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid input... Please enter a VALID INTEGER.");
+                                    input.nextLine();
+                                }
+                            }
+
+                            // Ensure valid Key2 input
+                            while (true) {
+                                System.out.print("Please Enter Value Of Key2 (positive integer): ");
+
+                                //Check if input is integer not character
+                                if (input.hasNextInt()) {
+                                    key2 = input.nextInt();
+
+                                    // Check if key2 is positive
+                                    if (key2 > 0) {
+                                        // Clear the buffer
+                                        input.nextLine();
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid Input... Please Enter POSITIVE integer.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid Input... Please Enter VALID INTEGER.");
+                                    input.next();
+                                }
+                            }
+
+                            //Creat Object From AffineCipherDecrypton Class
+                            AffineCipherDecryption DecryptedMessages = new AffineCipherDecryption(message , key1 , key2);
+                            //use getter method to return the decrypted msg
+                            System.out.println("The Encrypted Message is: " + DecryptedMessages.GetDecryptedMessage());
+                            System.out.println("--------------------------------------------------------------------------");
+                            break;
+
+                        default :
+                            // For inputs which is not in choices
+                            System.out.println("Invalid Input...Please Try Again");
+                    }
+
+                    break;
+
+                case 3 :
+
+                    //For Exiting from the program
+                    System.out.println("Ending The Program...");
+                    break;
+
+                default :
+                    // For inputs which is not in choices
+                    System.out.println("Invalid Input....Please Enter Valid Input");
+
+            }
+        }//For making the menu always display until choose exit
+        while (Choice1 != 3);
+    }
+}
+
